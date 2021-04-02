@@ -15,6 +15,7 @@
 
 #include <stdio.h>
 #include <unistd.h>
+#include <getopt.h>
 
 void find(char *where, char *name, char *action)
 {

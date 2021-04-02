@@ -1,6 +1,6 @@
 /*
  * This program shows how to list all the files in a directory.
- * You can follow the routine, but the code may not work prefectly.
+ * You can follow the routine, but the code may not work perfectly.
  *
  * Input: ./reddir testdir
  * Output: print all the files
@@ -58,6 +58,10 @@ void read_sub(char *sub_dir)
 int main(int argc, char **argv)
 {
   char *dir;
+  char *flag;
+  char *goal;
+  char *execution;
+
   if (argc < 2)
   {
     dir = ".";
@@ -65,6 +69,17 @@ int main(int argc, char **argv)
   else
   {
     dir = argv[1];
+    if (argc == 4)
+    {
+      flag = argv[2];
+      goal = argv[3];
+    }
+    else if (argc == 4)
+    {
+      flag = argv[2];
+      goal = argv[3];
+      execution = argv[4];
+    }
   }
   read_sub(dir);
 
