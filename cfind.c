@@ -1,8 +1,8 @@
-// Author: Cristiano Eleutherio Caon (R#11474435)
-// Date: 4/2/2021
-// Description: find command utility for UNIX system.
-//              Developed for Operating System Class (CS 4352)
-//              with professor Yong Chen.
+/*  Author: Cristiano Eleutherio Caon (R#11474435)
+    Date: 4/2/2021
+    Description: find command utility for UNIX system.
+              Developed for Operating System Class (CS 4352)
+              with professor Yong Chen. */
 
 #include <stdio.h>
 #include <unistd.h>
@@ -14,18 +14,24 @@
 #include <string.h>
 char *full_path;
 
-void read_sub(char *sub_dir)
+void find_directory(char *sub_dir)
 {
   DIR *sub_dp = opendir(sub_dir);
   struct dirent *sub_dirp;
+  struct stat buf;
 
   if (sub_dp != NULL)
   {
     while ((sub_dirp = readdir(sub_dp)) != NULL)
     {
-      printf("%s\n", sub_dirp->d_name);
-      //if(stat(sub_dirp->d_name,&buf)==0)
-      //printf("%d ", (int)buf.st_size);
+      if (strcmp(sub_dirp->d_name, "test1") == 0)
+      {
+        printf("%s\n", sub_dirp->d_name);
+        /*if (stat(sub_dirp->d_name, &buf) == 0)
+      {
+        printf("%d ", (int)buf.st_size);
+      }*/
+      }
       char *temp = sub_dirp->d_name;
       char temp1[] = ".";
       char temp2[] = "..";
@@ -42,7 +48,7 @@ void read_sub(char *sub_dir)
         if (subsubdp != NULL)
         {
           closedir(subsubdp);
-          read_sub(temp_full_path);
+          find_directory(temp_full_path);
         }
       }
     }
@@ -55,15 +61,28 @@ void read_sub(char *sub_dir)
   }
 }
 
-void find_decide(char *where, char *name, char *mmin, char *inum, char *action)
+void find_name(char *where, char *name, char *action)
 {
-  if (where != NULL)
+  if (action == NULL)
   {
-    read_sub(where);
   }
 }
 
-void process_arguments(int argc, char **argv)
+void find_inum(char *where, char *inum, char *action)
+{
+  if (action == NULL)
+  {
+  }
+}
+
+void find_mmin(char *where, char *mmin, char *action)
+{
+  if (action == NULL)
+  {
+  }
+}
+
+int main(int argc, char **argv)
 {
   int w, n, m, i, a;
   char *where, *name, *mmin, *inum, *action;
@@ -123,44 +142,35 @@ void process_arguments(int argc, char **argv)
 
   if (w == 1 && n == 1 && a == 1)
   {
-    find_decide(where, name, NULL, NULL, action);
-  }
-  else if (w == 1 && i == 1 && a == 1)
-  {
-    find_decide(where, NULL, NULL, inum, action);
+    find_name(where, name, action);
   }
   else if (w == 1 && m == 1 && a == 1)
   {
-    find_decide(where, NULL, mmin, NULL, action);
+    find_mmin(where, mmin, action);
   }
   else if (w == 1 && i == 1 && a == 1)
   {
-    find_decide(where, NULL, NULL, inum, action);
+    find_inum(where, inum, action);
   }
   else if (w == 1 && n == 1)
   {
-    find_decide(where, name, NULL, NULL, NULL);
+    find_name(where, name, NULL);
   }
   else if (w == 1 && m == 1)
   {
-    find_decide(where, NULL, mmin, NULL, NULL);
+    find_mmin(where, mmin, NULL);
   }
   else if (w == 1 && i == 1)
   {
-    find_decide(where, NULL, NULL, inum, NULL);
+    find_inum(where, inum, NULL);
   }
   else if (w == 1)
   {
-    find_decide(where, NULL, NULL, NULL, NULL);
+    find_directory(where);
   }
 
   argc -= optind;
   argv += optind;
-}
-
-int main(int argc, char **argv)
-{
-  process_arguments(argc, argv);
 
   exit(0);
 }
