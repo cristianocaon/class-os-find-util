@@ -1,4 +1,4 @@
-# Find command for UNIX OS
+# Find command
 
 Code developed for the operating system class (CS 4352), with professor Yong Chen at Texas Tech University.
 
