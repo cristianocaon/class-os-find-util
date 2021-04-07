@@ -4,4 +4,4 @@ Code developed for the operating system class (CS 4352), with professor Yong Che
 
 The provided code implements the ```find``` command provided in UNIX operating systems.
 
-The '''testdir''' directory is provided only to test the functionality of the command and to generate consistent results.
+The ```testdir``` directory is provided only to test the functionality of the command and to generate consistent results.
