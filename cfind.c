@@ -1,8 +1,6 @@
 /*  Author: Cristiano Eleutherio Caon (R#11474435)
-    Date: 4/2/2021
-    Description: find command utility for UNIX system.
-              Developed for Operating System Class (CS 4352)
-              with professor Yong Chen. */
+    Description: `find` command functionality for UNIX operating  system.
+                  Developed for Operating System Class (CS 4352) with professor Yong Chen. */
 
 #include <stdio.h>
 #include <unistd.h>
@@ -12,8 +10,8 @@
 #include <dirent.h>
 #include <string.h>
 #include <time.h>
-char *full_path;
 
+/*  find files in the given directory `dir` */
 void find_directory(char *dir)
 {
   DIR *sub_dp = opendir(dir);
@@ -27,7 +25,8 @@ void find_directory(char *dir)
       char temp1[] = ".";
       char temp2[] = "..";
 
-      if (strcmp(temp, temp1) != 0 && strcmp(temp, temp2) != 0) // recurcively loop into the sub-directory
+      /* recurcively loop into the sub-directory */
+      if (strcmp(temp, temp1) != 0 && strcmp(temp, temp2) != 0)
       {
         char temp3[] = "/";
         char *temp_sub = temp3;
@@ -35,6 +34,7 @@ void find_directory(char *dir)
         char *temp_full_path = malloc(sizeof(char) * 2000);
         temp_full_path = strcpy(temp_full_path, dir);
         strcat(temp_full_path, temp_sub);
+
         printf("%s\n", temp_full_path);
         DIR *subsubdp = opendir(temp_full_path);
         if (subsubdp != NULL)
@@ -53,6 +53,8 @@ void find_directory(char *dir)
   }
 }
 
+/*  find files that match the `target` name. 
+    Performs `action` if provided */
 void find_name(char *dir, char *target, char *action)
 {
   DIR *sub_dp = opendir(dir);
@@ -66,7 +68,8 @@ void find_name(char *dir, char *target, char *action)
       char temp1[] = ".";
       char temp2[] = "..";
 
-      if (strcmp(temp, temp1) != 0 && strcmp(temp, temp2) != 0) // recurcively loop into the sub-directory
+      /* recurcively loop into the sub-directory */
+      if (strcmp(temp, temp1) != 0 && strcmp(temp, temp2) != 0)
       {
         char temp3[] = "/";
         char *temp_sub = temp3;
@@ -100,6 +103,8 @@ void find_name(char *dir, char *target, char *action)
   }
 }
 
+/*  find files which match Inode with `inum`. 
+    Performs `action` if provided */
 void find_inum(char *dir, char *inum, char *action)
 {
   DIR *sub_dp = opendir(dir);
@@ -114,7 +119,8 @@ void find_inum(char *dir, char *inum, char *action)
       char temp1[] = ".";
       char temp2[] = "..";
 
-      if (strcmp(temp, temp1) != 0 && strcmp(temp, temp2) != 0) // recurcively loop into the sub-directory
+      /* recurcively loop into the sub-directory */
+      if (strcmp(temp, temp1) != 0 && strcmp(temp, temp2) != 0)
       {
         char temp3[] = "/";
         char *temp_sub = temp3;
@@ -154,6 +160,9 @@ void find_inum(char *dir, char *inum, char *action)
   }
 }
 
+/*  find files according to their last modification time.
+    Provides functionalitiy for less than, greater than or equal to mmin use cases.
+    Performs `action` if provided */
 void find_mmin(char *dir, char *mmin, char *action)
 {
   DIR *sub_dp = opendir(dir);
@@ -168,7 +177,8 @@ void find_mmin(char *dir, char *mmin, char *action)
       char temp1[] = ".";
       char temp2[] = "..";
 
-      if (strcmp(temp, temp1) != 0 && strcmp(temp, temp2) != 0) // recurcively loop into the sub-directory
+      /* recurcively loop into the sub-directory */
+      if (strcmp(temp, temp1) != 0 && strcmp(temp, temp2) != 0)
       {
         char temp3[] = "/";
         char *temp_sub = temp3;
