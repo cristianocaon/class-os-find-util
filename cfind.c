@@ -6,7 +6,6 @@
 
 #include <stdio.h>
 #include <unistd.h>
-#include <getopt.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -80,6 +79,8 @@ void find_name(char *dir, char *target, char *action)
           printf("FOUND: %s\n", temp_full_path);
           if (action != NULL)
           {
+            unlink(temp_full_path);
+            printf("File deleted!\n");
           }
         }
         DIR *subsubdp = opendir(temp_full_path);
@@ -130,6 +131,8 @@ void find_inum(char *dir, char *inum, char *action)
             printf("FOUND: %s\n", temp_full_path);
             if (action != NULL)
             {
+              unlink(temp_full_path);
+              printf("File deleted!\n");
             }
           }
         }
@@ -182,6 +185,11 @@ void find_mmin(char *dir, char *mmin, char *action)
             if ((long)(time(NULL) - buf.st_mtime) < atol(mmin) * -60)
             {
               printf("FOUND: %s\n", temp_full_path);
+              if (action != NULL)
+              {
+                unlink(temp_full_path);
+                printf("File deleted!\n");
+              }
             }
           }
           else if (mmin[0] == '+')
@@ -189,6 +197,11 @@ void find_mmin(char *dir, char *mmin, char *action)
             if ((long)(time(NULL) - buf.st_mtime) > atol(mmin) * 60)
             {
               printf("FOUND: %s\n", temp_full_path);
+              if (action != NULL)
+              {
+                unlink(temp_full_path);
+                printf("File deleted!\n");
+              }
             }
           }
           else
@@ -196,12 +209,13 @@ void find_mmin(char *dir, char *mmin, char *action)
             if ((long)(time(NULL) - buf.st_mtime) == atol(mmin) * 60)
             {
               printf("FOUND: %s\n", temp_full_path);
+              if (action != NULL)
+              {
+                unlink(temp_full_path);
+                printf("File deleted!\n");
+              }
             }
           }
-        }
-
-        if (action != NULL)
-        {
         }
 
         DIR *subsubdp = opendir(temp_full_path);
@@ -266,17 +280,17 @@ int main(int argc, char **argv)
       else if (argc == 5)
       {
         action = argv[4];
-        if (strcmp(flag, "-n") == 0)
+        if ((strcmp(flag, "-n") == 0) && (strcmp(action, "-delete") == 0))
         {
           printf("DIR: %s\tTARGET NAME: %s\tACTION: %s\n", dir, target, action);
           find_name(dir, target, action);
         }
-        else if (strcmp(flag, "-mmin") == 0)
+        else if ((strcmp(flag, "-mmin") == 0) && (strcmp(action, "-delete") == 0))
         {
           printf("DIR: %s\tTARGET MMIN: %s\tACTION: %s\n", dir, target, action);
           find_mmin(dir, target, action);
         }
-        else if (strcmp(flag, "-inum") == 0)
+        else if ((strcmp(flag, "-inum") == 0) && (strcmp(action, "-delete") == 0))
         {
           printf("DIR: %s\tTARGET INUM: %s\tACTION: %s\n", dir, target, action);
           find_inum(dir, target, action);
