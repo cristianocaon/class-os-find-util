@@ -88,7 +88,7 @@ void find_name(char *dir, char *target, char *action)
         strcat(temp_full_path, temp_sub);
         if (strcmp(target, temp) == 0)
         {
-          printf("%s\n", temp_full_path);
+          printf("FOUND: %s\n", temp_full_path);
           if (action != NULL)
           {
           }
@@ -132,18 +132,22 @@ void find_inum(char *dir, char *inum, char *action)
         char *temp_full_path = malloc(sizeof(char) * 2000);
         temp_full_path = strcpy(temp_full_path, dir);
         strcat(temp_full_path, temp_sub);
-        if (strcmp(inum, temp) == 0)
+
+        if (stat(temp_full_path, &buf) == 0)
         {
-          printf("%s\n", temp_full_path);
-          if (action != NULL)
+          int curr_inum = (int)buf.st_ino;
+          if (curr_inum == strtol(inum, NULL, 10))
           {
+            printf("FOUND: %s\n", temp_full_path);
+            printf("INUM: %d\n", curr_inum);
           }
         }
+
         DIR *subsubdp = opendir(temp_full_path);
         if (subsubdp != NULL)
         {
           closedir(subsubdp);
-          find_name(temp_full_path, inum, action);
+          find_inum(temp_full_path, inum, action);
         }
       }
     }
@@ -206,7 +210,7 @@ int main(int argc, char **argv)
         else if (strcmp(flag, "-inum") == 0)
         {
           printf("DIR: %s\tTARGET INUM: %s\n", dir, target);
-          find_inum(flag, target, NULL);
+          find_inum(dir, target, NULL);
         }
       }
       else if (argc == 5)
@@ -225,7 +229,7 @@ int main(int argc, char **argv)
         else if (strcmp(flag, "-inum") == 0)
         {
           printf("DIR: %s\tTARGET INUM: %s\tACTION: %s\n", dir, target, action);
-          find_inum(flag, target, action);
+          find_inum(dir, target, action);
         }
       }
     }
