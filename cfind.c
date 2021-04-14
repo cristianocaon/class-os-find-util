@@ -12,29 +12,18 @@
 #include <sys/stat.h>
 #include <dirent.h>
 #include <string.h>
+#include <time.h>
 char *full_path;
 
 void find_directory(char *dir)
 {
   DIR *sub_dp = opendir(dir);
   struct dirent *sub_dirp;
-  //struct stat buf;
 
   if (sub_dp != NULL)
   {
     while ((sub_dirp = readdir(sub_dp)) != NULL)
     {
-      // if (strcmp(sub_dirp->d_name, "test1") == 0)
-      // {
-      //   printf("%s\n", sub_dirp->d_name);
-      //   /*if (stat(sub_dirp->d_name, &buf) == 0)
-      // {
-      //   printf("%d ", (int)buf.st_size);
-      // }*/
-      // }
-
-      //printf("%s\n", sub_dirp->d_name);
-
       char *temp = sub_dirp->d_name;
       char temp1[] = ".";
       char temp2[] = "..";
@@ -139,7 +128,9 @@ void find_inum(char *dir, char *inum, char *action)
           if (curr_inum == strtol(inum, NULL, 10))
           {
             printf("FOUND: %s\n", temp_full_path);
-            printf("INUM: %d\n", curr_inum);
+            if (action != NULL)
+            {
+            }
           }
         }
 
@@ -166,8 +157,67 @@ void find_mmin(char *dir, char *mmin, char *action)
   struct dirent *sub_dirp;
   struct stat buf;
 
-  if (action == NULL)
+  if (sub_dp != NULL)
   {
+    while ((sub_dirp = readdir(sub_dp)) != NULL)
+    {
+      char *temp = sub_dirp->d_name;
+      char temp1[] = ".";
+      char temp2[] = "..";
+
+      if (strcmp(temp, temp1) != 0 && strcmp(temp, temp2) != 0) // recurcively loop into the sub-directory
+      {
+        char temp3[] = "/";
+        char *temp_sub = temp3;
+        temp_sub = strcat(temp_sub, temp);
+        char *temp_full_path = malloc(sizeof(char) * 2000);
+        temp_full_path = strcpy(temp_full_path, dir);
+        strcat(temp_full_path, temp_sub);
+
+        memset(&buf, 0, sizeof(buf));
+        if (stat(temp_full_path, &buf) == 0)
+        {
+          if (mmin[0] == '-')
+          {
+            if ((long)(time(NULL) - buf.st_mtime) < atol(mmin) * -60)
+            {
+              printf("FOUND: %s\n", temp_full_path);
+            }
+          }
+          else if (mmin[0] == '+')
+          {
+            if ((long)(time(NULL) - buf.st_mtime) > atol(mmin) * 60)
+            {
+              printf("FOUND: %s\n", temp_full_path);
+            }
+          }
+          else
+          {
+            if ((long)(time(NULL) - buf.st_mtime) == atol(mmin) * 60)
+            {
+              printf("FOUND: %s\n", temp_full_path);
+            }
+          }
+        }
+
+        if (action != NULL)
+        {
+        }
+
+        DIR *subsubdp = opendir(temp_full_path);
+        if (subsubdp != NULL)
+        {
+          closedir(subsubdp);
+          find_mmin(temp_full_path, mmin, action);
+        }
+      }
+    }
+    closedir(sub_dp);
+  }
+  else
+  {
+    printf("Cannot open directory\n");
+    exit(2);
   }
 }
 
