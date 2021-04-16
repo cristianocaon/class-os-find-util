@@ -1,0 +1,2 @@
+DIR: testdir	TARGET NAME: test7
+FOUND: testdir/dir3/test7

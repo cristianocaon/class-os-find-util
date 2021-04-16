@@ -1,0 +1,12 @@
+DIR: testdir	TARGET MMIN: +10
+FOUND: testdir/test1
+FOUND: testdir/dir3
+FOUND: testdir/dir3/test7
+FOUND: testdir/dir3/test8
+FOUND: testdir/dir1
+FOUND: testdir/dir1/test4
+FOUND: testdir/dir1/test3
+FOUND: testdir/dir1/dir2
+FOUND: testdir/dir1/dir2/test6
+FOUND: testdir/dir1/dir2/test5
+FOUND: testdir/test2

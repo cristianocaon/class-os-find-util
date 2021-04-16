@@ -1,0 +1,2 @@
+DIR: testdir	TARGET INUM: 43302
+FOUND: testdir/dir1/test3
