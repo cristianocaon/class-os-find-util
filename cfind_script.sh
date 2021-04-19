@@ -1,4 +1,6 @@
 #!/bin/bash
+# Script to produce output examples for the cfind utility
+# with its different flags.
 
 # compile the cfind.c file from Makefile instructions
 make
